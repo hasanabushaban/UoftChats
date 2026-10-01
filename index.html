@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Course Chats — find your classmates</title>
+<style>
+:root{--bg:#eef3ff;--card:#fff;--text:#0b1b4a;--mute:#5a6a9a;--line:#d5e0ff;--brand:#1f5bff;--brand2:#e3ecff;--deep:#0a2a9e;--glow:rgba(31,91,255,.28);--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070d24;--card:#0f1a42;--text:#eaf0ff;--mute:#9fb1e6;--line:#21306b;--brand:#5b8cff;--brand2:#16245a;--deep:#2a4fd6;--glow:rgba(91,140,255,.3);--bad:#ff8a7a}}
+:root[data-theme="dark"]{--bg:#070d24;--card:#0f1a42;--text:#eaf0ff;--mute:#9fb1e6;--line:#21306b;--brand:#5b8cff;--brand2:#16245a;--deep:#2a4fd6;--glow:rgba(91,140,255,.3);--bad:#ff8a7a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0a2a9e 0%,#1f5bff 55%,#4aa3ff 100%);color:#fff;padding:44px 16px 84px;text-align:center}
+.blob{position:absolute;border-radius:50%;filter:blur(40px);opacity:.45;animation:float 9s ease-in-out infinite}
+.b1{width:260px;height:260px;background:#7fd0ff;left:-60px;top:-80px}
+.b2{width:220px;height:220px;background:#3b3bff;right:-50px;top:30px;animation-delay:-3s}
+.b3{width:160px;height:160px;background:#9be7ff;left:45%;bottom:-90px;animation-delay:-6s}
+@keyframes float{50%{transform:translate(18px,22px) scale(1.08)}}
+.hero>*:not(.blob){position:relative}
+.pill{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 14px;border-radius:999px;font-size:.82rem;backdrop-filter:blur(6px)}
+h1{font-size:clamp(2.1rem,7vw,3.2rem);margin:14px 0 8px;letter-spacing:-.03em;line-height:1.05}
+h1 span{background:linear-gradient(90deg,#fff,#bfe6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:0 auto;max-width:460px;opacity:.92}
+main{max-width:720px;margin:-52px auto 0;padding:0 16px 48px;position:relative}
+.search{position:relative;background:var(--card);border-radius:18px;box-shadow:0 12px 40px var(--glow);border:1px solid var(--line)}
+.search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:22px;height:22px;stroke:var(--brand);fill:none;stroke-width:2.2;stroke-linecap:round}
+input,select{font:inherit;width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--brand);border-color:transparent}
+#q{border:0;background:transparent;font-size:1.15rem;padding:20px 18px 20px 52px;border-radius:18px}
+#q:focus{outline:2px solid var(--brand)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px;align-items:center}
+.chips small{color:var(--mute);margin-right:2px}
+.chip{background:var(--brand2);color:var(--brand);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:.15s}
+.chip:hover{background:var(--brand);color:#fff;transform:translateY(-2px)}
+.stats{display:flex;gap:10px;margin:16px 0 0}
+.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.stat b{display:block;font-size:1.5rem;color:var(--brand);line-height:1.1}
+.stat span{color:var(--mute);font-size:.8rem}
+.card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:14px;padding:14px 16px;margin-top:12px;transition:.18s;animation:in .4s both}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px var(--glow)}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.code{font-weight:800;font-size:1.15rem;letter-spacing:.01em}
+.tag{display:inline-block;background:var(--brand2);color:var(--brand);border-radius:999px;padding:2px 10px;font-size:.78rem;margin:4px 6px 0 0;font-weight:600}
+.tag.p{background:var(--brand);color:#fff}
+a.join,button.btn{background:linear-gradient(135deg,var(--deep),var(--brand));color:#fff;border:0;border-radius:12px;padding:10px 18px;text-decoration:none;cursor:pointer;font-weight:700;display:inline-block;transition:.15s;box-shadow:0 4px 14px var(--glow)}
+a.join:hover,button.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+button.btn:disabled{opacity:.6}
+button.link{background:none;border:0;color:var(--mute);cursor:pointer;font-size:.8rem;text-decoration:underline;padding:6px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+.empty{color:var(--mute);text-align:center;padding:28px 8px;border:2px dashed var(--line);border-radius:14px;margin-top:12px}
+h2{font-size:1.25rem;margin:36px 0 4px}
+.form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+.note{color:var(--mute);font-size:.82rem;margin-top:28px}
+.msg{font-size:.9rem;color:var(--brand)}
+.err{color:var(--bad)}
+[hidden]{display:none!important}
+.mod{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<header class="hero">
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<span class="pill">🎓 For UofT students</span>
+<h1>Find your <span>classmates</span><br>before day one</h1>
+<p class="sub">Search your course code, tap join, and you're in the group chat.</p>
+</header>
+<main>
+<div class="search">
+<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input id="q" placeholder="Search a course, e.g. ECO101" autocomplete="off" aria-label="Search course code">
+</div>
+<div class="chips" id="chips"><small>Try:</small></div>
+<p class="note" style="margin:14px 0 0">🔒 Every chat is moderator-run. Tap <b>Request to join</b>, then a moderator confirms you're a UofT student before letting you in.</p>
+<div class="stats"><div class="stat"><b id="sN">0</b><span>chats listed</span></div><div class="stat"><b id="sC">0</b><span>courses covered</span></div></div>
+<div id="results"></div>
+<p class="note" id="contact" hidden></p>
+<p class="note">Independent student community. Not affiliated with or endorsed by the University of Toronto. Keep chats respectful and never share answers or other unauthorized academic material. Only join links you trust.</p>
+</main>
+<script src="chats.js"></script>
+<script>
+(function(){
+var ICON={WhatsApp:"💬",Discord:"🎮",Instagram:"📸",Telegram:"✈️",GroupMe:"👥",Messenger:"⚡"};
+var chats=(window.CHATS||[]),site=(window.SITE||{}),query="";
+var $=function(id){return document.getElementById(id)};
+function norm(s){return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
+function esc(s){var d=document.createElement("div");d.textContent=String(s==null?"":s);return d.innerHTML}
+function safeUrl(u){try{var x=new URL(u);return x.protocol==="https:"?x.href:null}catch(e){return null}}
+if(site.contact){$("contact").hidden=false;$("contact").textContent="Broken link or want a chat added? "+site.contact}
+var codes=[];chats.forEach(function(c){if(codes.indexOf(c.code)<0)codes.push(c.code)});
+(codes.length?codes:["ECO101","CSC108","MAT137","PSY100","BIO120"]).slice(0,5).forEach(function(c){
+  var b=document.createElement("button");b.className="chip";b.textContent=c;
+  b.onclick=function(){$("q").value=c;query=c;render()};$("chips").appendChild(b);
+});
+var seen={};chats.forEach(function(c){seen[norm(c.code)]=1});
+$("sN").textContent=chats.length;$("sC").textContent=Object.keys(seen).length;
+function render(){
+  var q=norm(query),box=$("results");
+  var list=chats.filter(function(c){return !q||norm(c.code).indexOf(q)>-1});
+  if(!list.length){box.innerHTML='<div class="empty">'+(q?'No chat for "'+esc(query)+'" yet 👀<br>Check back soon, more are added every week.':'No chats listed yet.')+'</div>';return}
+  box.innerHTML=list.slice(0,50).map(function(c,i){
+    var u=safeUrl(c.link);
+    return '<div class="card" style="animation-delay:'+(i*50)+'ms"><div class="row"><div><div class="code">'+esc(c.code)+'</div><span class="tag p">'+(ICON[c.platform]||"💬")+' '+esc(c.platform)+'</span><span class="tag">'+esc(c.term)+'</span></div>'+
+    (u?'<a class="join" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">Request to join →</a>':'')+'</div></div>';
+  }).join("");
+}
+$("q").addEventListener("input",function(e){query=e.target.value;render()});
+render();
+})();
+</script>
+</body></html>

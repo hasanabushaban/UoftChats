@@ -1,0 +1,14 @@
+// HOW TO ADD A CHAT: copy one of the lines below, paste it above the closing ], and change the words.
+// Keep the commas and quotes exactly as they are. Links must start with https://
+// platform can be: WhatsApp, Discord, Instagram, Telegram, GroupMe, Messenger
+
+window.SITE = {
+  // Shown at the bottom of the page. Example: "Message @yourhandle on Instagram."
+  contact: ""
+};
+
+window.CHATS = [
+  { code: "ECO200Y1", term: "Fall-Winter 2026-2027", platform: "Instagram", link: "https://ig.me/j/2O1O4apSK6lOlYp0/" },
+  { code: "BIO230H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/AbbMagTEK7XYVngI/" },
+  { code: "MAT137Y1", term: "Full year 2026–2027", platform: "Instagram", link: "https://ig.me/j/EXAMPLE-REPLACE-ME" }
+];
