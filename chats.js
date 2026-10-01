@@ -11,5 +11,5 @@ window.CHATS = [
   { code: "ECO200Y1", term: "Fall-Winter 2026-2027", platform: "WhatsApp", link: "https://chat.whatsapp.com/Gz9sOaVS8xlHdRqloSzolG?mode=gi_t" },
   { code: "HMB300H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/ALcxSxuIklCu8Lpz/" },
   { code: "PSL372H1", term: "Fall 2026", platform: "Instagram", link: "https://ig.me/j/ALcxSxuIklCu8Lpz/" },
-  { code: "HMB200H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/AbaBsUjTu-CqwweZ/" },  
+  { code: "PSL270H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/AbaBsUjTu-CqwweZ/" },  
 ];
