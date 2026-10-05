@@ -4,7 +4,7 @@
 
 window.SITE = {
   // Shown at the bottom of the page. Example: "Message @yourhandle on Instagram."
-  contact: "Message @hasannhaitham on Instagram.",
+  contact: "Email @hasan.abushaban@mail.utoronto.ca",
   sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlqLRFMCwUMcZs1haTdBLyn0cqZ_xFgck0jOX7Edy8W3B8DAbAqndQqLFQlGvKDrUDahM4VQmTo3OK/pub?gid=504930916&single=true&output=csv"
 };
 
