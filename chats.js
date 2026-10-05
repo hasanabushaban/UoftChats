@@ -4,13 +4,13 @@
 
 window.SITE = {
   // Shown at the bottom of the page. Example: "Message @yourhandle on Instagram."
-  contact: "Message @hasannhaitham on Instagram." 
+  contact: "Message @hasannhaitham on Instagram.",
   sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlqLRFMCwUMcZs1haTdBLyn0cqZ_xFgck0jOX7Edy8W3B8DAbAqndQqLFQlGvKDrUDahM4VQmTo3OK/pub?gid=504930916&single=true&output=csv"
 };
 
 window.CHATS = [
   { code: "ECO200Y1", term: "Fall-Winter 2026-2027", platform: "WhatsApp", link: "https://chat.whatsapp.com/Gz9sOaVS8xlHdRqloSzolG?mode=gi_t" },
-  { code: "HMB300H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/ALcxSxuIklCu8Lpz/" },
+  { code: "HMB300H1", term: "Fall 2026", platform: "Instagram", link: "https://ig.me/j/ALcxSxuIklCu8Lpz/" },
   { code: "PSL372H1", term: "Fall 2026", platform: "Instagram", link: "https://ig.me/j/ALcxSxuIklCu8Lpz/" },
-  { code: "PSL270H1", term: "Fall 2026", platform: "Instagram",  link: "https://ig.me/j/AbaBsUjTu-CqwweZ/" },  
+  { code: "PSL270H1", term: "Fall 2026", platform: "Instagram", link: "https://ig.me/j/AbaBsUjTu-CqwweZ/" },
 ];
