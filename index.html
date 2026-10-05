@@ -81,32 +81,47 @@ h2{font-size:1.25rem;margin:36px 0 4px}
 <script src="chats.js"></script>
 <script>
 (function(){
+var HOSTS={WhatsApp:["chat.whatsapp.com"],Discord:["discord.gg","discord.com"],Instagram:["ig.me","instagram.com"],Telegram:["t.me","telegram.me"],GroupMe:["groupme.com","app.groupme.com"],Messenger:["m.me","messenger.com"]};
 var ICON={WhatsApp:"💬",Discord:"🎮",Instagram:"📸",Telegram:"✈️",GroupMe:"👥",Messenger:"⚡"};
-var chats=(window.CHATS||[]),site=(window.SITE||{}),query="";
+var site=(window.SITE||{}),chats=(window.CHATS||[]).slice(),query="";
 var $=function(id){return document.getElementById(id)};
 function norm(s){return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
 function esc(s){var d=document.createElement("div");d.textContent=String(s==null?"":s);return d.innerHTML}
-function safeUrl(u){try{var x=new URL(u);return x.protocol==="https:"?x.href:null}catch(e){return null}}
+function okLink(c){try{var x=new URL(c.link);if(x.protocol!=="https:")return null;var h=x.hostname.replace(/^www\./,""),al=HOSTS[c.platform];if(!al)return null;return al.some(function(d){return h===d||h.endsWith("."+d)})?x.href:null}catch(e){return null}}
 if(site.contact){$("contact").hidden=false;$("contact").textContent="Broken link or want a chat added? "+site.contact}
-var codes=[];chats.forEach(function(c){if(codes.indexOf(c.code)<0)codes.push(c.code)});
-(codes.length?codes:["ECO101","CSC108","MAT137","PSY100","BIO120"]).slice(0,5).forEach(function(c){
-  var b=document.createElement("button");b.className="chip";b.textContent=c;
-  b.onclick=function(){$("q").value=c;query=c;render()};$("chips").appendChild(b);
-});
-var seen={};chats.forEach(function(c){seen[norm(c.code)]=1});
-$("sN").textContent=chats.length;$("sC").textContent=Object.keys(seen).length;
+function buildChips(){
+  var box=$("chips"),codes=[];box.innerHTML="<small>Try:</small>";
+  chats.forEach(function(c){if(codes.indexOf(c.code)<0)codes.push(c.code)});
+  (codes.length?codes:["ECO101","CSC108","MAT137","PSY100","BIO120"]).slice(0,5).forEach(function(c){
+    var b=document.createElement("button");b.className="chip";b.textContent=c;
+    b.onclick=function(){$("q").value=c;query=c;render()};box.appendChild(b);
+  });
+}
+function stats(){var seen={};chats.forEach(function(c){seen[norm(c.code)]=1});$("sN").textContent=chats.length;$("sC").textContent=Object.keys(seen).length}
 function render(){
   var q=norm(query),box=$("results");
   var list=chats.filter(function(c){return !q||norm(c.code).indexOf(q)>-1});
   if(!list.length){box.innerHTML='<div class="empty">'+(q?'No chat for "'+esc(query)+'" yet 👀<br>Check back soon, more are added every week.':'No chats listed yet.')+'</div>';return}
   box.innerHTML=list.slice(0,50).map(function(c,i){
-    var u=safeUrl(c.link);
+    var u=okLink(c);
     return '<div class="card" style="animation-delay:'+(i*50)+'ms"><div class="row"><div><div class="code">'+esc(c.code)+'</div><span class="tag p">'+(ICON[c.platform]||"💬")+' '+esc(c.platform)+'</span><span class="tag">'+esc(c.term)+'</span></div>'+
     (u?'<a class="join" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">Request to join →</a>':'')+'</div></div>';
   }).join("");
 }
+function refresh(){buildChips();stats();render()}
+function parseCSV(t){var rows=[],r=[],f="",q=false;for(var i=0;i<t.length;i++){var ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=ch}else if(ch=='"')q=true;else if(ch==","){r.push(f);f=""}else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=ch}
+  if(f||r.length){r.push(f);rows.push(r)}return rows}
 $("q").addEventListener("input",function(e){query=e.target.value;render()});
-render();
+refresh();
+if(site.sheetUrl){
+  fetch(site.sheetUrl).then(function(r){return r.text()}).then(function(t){
+    parseCSV(t).slice(1).forEach(function(r){
+      var c={code:(r[0]||"").trim().toUpperCase().replace(/\s/g,""),term:(r[1]||"").trim(),platform:(r[2]||"").trim(),link:(r[3]||"").trim()};
+      if(/^[A-Z]{3}[0-9]{3}[A-Z0-9]{0,2}$/.test(c.code)&&okLink(c)&&!chats.some(function(x){return x.link===c.link}))chats.push(c);
+    });
+    refresh();
+  }).catch(function(){});
+}
 })();
 </script>
 </body></html>
